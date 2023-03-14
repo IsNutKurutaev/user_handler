@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
     }
 
     /**
-     * UserHandlerRequest the commands for the application.
+     * Register the commands for the application.
      *
      * @return void
      */

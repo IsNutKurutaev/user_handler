@@ -7,7 +7,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * UserHandlerRequest any application services.
+     * Register any application services.
      *
      * @return void
      */

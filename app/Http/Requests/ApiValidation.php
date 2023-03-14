@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ApiValidationRequest extends FormRequest
+class ApiValidation extends FormRequest
 {
     protected function failedValidation(Validator $validator)
     {
@@ -15,6 +15,7 @@ class ApiValidationRequest extends FormRequest
                 'code' => 422,
                 'message' => 'Validation error',
                 'errors' => $validator->errors(),
-                ]],422));
+            ]
+        ],422));
     }
 }

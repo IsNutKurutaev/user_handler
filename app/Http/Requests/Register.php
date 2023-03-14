@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class UserHandlerRequest extends ApiValidationRequest
+class Register extends ApiValidation
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class UserHandlerRequest extends ApiValidationRequest
     {
         return [
             'name' => ['required'],
-            'login' => ['required'],
+            'login' => ['required', 'unique:users,login'],
             'password' => ['required']
         ];
     }
