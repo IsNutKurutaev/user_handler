@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class ErrorsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,9 @@ class LoginResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => [
-                'user_token' => $this->api_token,
+            'error' => [
+                'code' => $this['code'],
+                'message' => $this['message']
             ]
         ];
     }

@@ -10,8 +10,8 @@ class RegistrationResource extends JsonResource
     {
         return [
             'data' => [
-                    'id' => $this->id,
-                    'status' => 'created'
+                'id' => $this->id,
+                'status' => 'created'
             ]
         ];
     }

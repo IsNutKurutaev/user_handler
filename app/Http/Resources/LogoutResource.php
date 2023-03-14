@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LoginResource extends JsonResource
+class LogoutResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,7 +16,7 @@ class LoginResource extends JsonResource
     {
         return [
             'data' => [
-                'user_token' => $this->api_token,
+                'message' => 'logout'
             ]
         ];
     }

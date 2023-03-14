@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('user', [UserController::class, 'userRegistration']);
 Route::post('login', [UserController::class, 'login']);
+Route::get('logout', [UserController::class, 'logout']);
+Route::get('user', [UserController::class, 'showUsers']);

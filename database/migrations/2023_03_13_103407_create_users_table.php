@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('login');
             $table->string('password');
             $table->string('path')->nullable();
-            $table->string('remember_token');
+            $table->string('api_token')->nullable();
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ class User extends Model
     protected $guarded = [ 'id' ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'api_token', 'created_at', 'updated_at'
     ];
 
     protected $table = 'users';
