@@ -41,6 +41,7 @@ class UserController extends Controller
 
         return response(new RegistrationResource($user), 201);
     }
+
     public function login(Login $request)
     {
         $find_user = User::firstWhere('login', $request->login);
@@ -54,31 +55,19 @@ class UserController extends Controller
         }
         return response(new ErrorsResource(['code' => 401, 'message' => 'Authentication failed']), 401);
     }
+
     public function logout(Logout $request)
     {
-        if(self::isNotUserAuthorized($request)) {
-            return response(new ErrorsResource(['code' => 403, 'message' => 'Login failed']), 403);
-        }
         $user = User::firstWhere('api_token', $request->bearerToken());
         $user->api_token = null;
         $user->save();
 
         return response(new LogoutResource($request), 200);
     }
+
     public function showUsers(ShowRequest $request)
     {
-        if(self::isNotUserAuthorized($request)) {
-            return response(new ErrorsResource(['code' => 403, 'message' => 'Login failed']), 403);
-        }
-
         $users['data'] = User::select('id', 'name', 'login')->get();
         return response($users, 200);
-    }
-    static function isNotUserAuthorized($request)
-    {
-        $token = $request->bearerToken();
-        $user = User::firstWhere('api_token', $token);
-
-        return ! isset($user);
     }
 }
