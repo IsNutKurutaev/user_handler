@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Http\Middleware\EnsureTokenIsValid;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -64,6 +63,6 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'scope.token' => EnsureTokenIsValid::class,
+        'scope.token' => \App\Http\Middleware\EnsureTokenIsValid::class,
     ];
 }

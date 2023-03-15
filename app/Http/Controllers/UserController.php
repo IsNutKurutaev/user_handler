@@ -56,7 +56,7 @@ class UserController extends Controller
         return response(new ErrorsResource(['code' => 401, 'message' => 'Authentication failed']), 401);
     }
 
-    public function logout(Logout $request)
+    public function logout(Request $request)
     {
         $user = User::firstWhere('api_token', $request->bearerToken());
         $user->api_token = null;
@@ -65,9 +65,10 @@ class UserController extends Controller
         return response(new LogoutResource($request), 200);
     }
 
-    public function showUsers(ShowRequest $request)
+    public function showUsers()
     {
         $users['data'] = User::select('id', 'name', 'login')->get();
+
         return response($users, 200);
     }
 }
