@@ -20,7 +20,7 @@ class EnsureTokenIsValid
     public function handle(Request $request, Closure $next): Response
     {
         $token = $request->bearerToken();
-        $user = User::firstWhere('api_token', $token);
+        $user = User::query()->firstWhere('api_token', $token);
 
         if($token != null && isset($user)) {
             return $next($request);

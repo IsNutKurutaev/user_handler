@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Model
 {
@@ -23,10 +24,16 @@ class User extends Model
 
     protected $table = 'users';
 
+    public function workerOnShift(): HasMany
+    {
+        return $this->hasMany(WorkerOnShift::class);
+    }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(UsersGroup::class);
     }
+
     public function status(): BelongsTo
     {
         return $this->belongsTo(UsersStatus::class);

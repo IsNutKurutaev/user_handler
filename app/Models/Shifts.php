@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class UsersGroup extends Model
+class Shifts extends Model
 {
     use HasFactory;
 
-    protected $fillable = [ 'group' ];
+    protected $fillable = [ 'start', 'end', 'active' ];
 
     protected $guarded = [ 'id' ];
 
     protected $hidden = [ 'created_at', 'updated_at' ];
 
-    protected $table = 'users_group';
+    protected $table = 'shifts';
 
-    public function users(): HasMany
+    public function workerOnShift(): HasMany
     {
-        return $this->HasMany(User::class);
+        return $this->hasMany(WorkerOnShift::class);
     }
 }
