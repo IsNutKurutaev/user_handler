@@ -25,6 +25,6 @@ class EnsureTokenIsValid
         if($token != null && isset($user)) {
             return $next($request);
         }
-        return response(new ErrorsResource(['code' => 403, 'message' => 'Login failed']), 403);
+        return response(['error' => ['code' => 403, 'message' => 'Login failed']], 403);
     }
 }

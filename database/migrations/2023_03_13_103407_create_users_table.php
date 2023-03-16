@@ -19,10 +19,15 @@ return new class extends Migration
             $table->string('surname')->nullable();
             $table->string('patronymic')->nullable();
             $table->string('login');
+            $table->unsignedBigInteger('status_id')->default(1);
+            $table->unsignedBigInteger('group_id')->nullable();
             $table->string('password');
             $table->string('path')->nullable();
             $table->string('api_token')->nullable();
             $table->timestamps();
+
+            $table->foreign('status_id')->references('id')->on('users_status');
+            $table->foreign('group_id')->references('id')->on('users_group');
         });
     }
 

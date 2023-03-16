@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Login extends ApiValidation
+class LoginRequest extends ApiValidationRequest
 {
     public function authorize()
     {

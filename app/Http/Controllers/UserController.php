@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ApiAuthorisation;
-use App\Http\Requests\Login;
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\Logout;
-use App\Http\Requests\Register;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ShowRequest;
 use App\Http\Resources\ErrorsResource;
 use App\Http\Resources\LoginResource;
@@ -13,16 +13,14 @@ use App\Http\Resources\LogoutResource;
 use App\Http\Resources\RegistrationResource;
 use App\Http\Resources\ShowUsersResource;
 use App\Models\User;
-use http\Env\Response;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function userRegistration(Register $request)
+    public function userRegistration(RegisterRequest $request)
     {
         if(isset($request->photo_file)) {
             $img = Storage::put('photos', $request->photo_file);
@@ -37,12 +35,13 @@ class UserController extends Controller
             'path' => $storagePath ?? null,
             'password' => Hash::make($request['password']),
             'api_token' => Str::random(100),
+            'group_id' => $request['role_id'],
         ]);
 
-        return response(new RegistrationResource($user), 201);
+        return (new RegistrationResource($user))->response()->setStatusCode(201);
     }
 
-    public function login(Login $request)
+    public function login(LoginRequest $request)
     {
         $find_user = User::firstWhere('login', $request->login);
         if(isset($find_user)) {
@@ -50,10 +49,10 @@ class UserController extends Controller
             {
                 $find_user->api_token = Str::random(100);
                 $find_user->save();
-                return response(new LoginResource($find_user),200);
+                return response(['data' => ['user_token' => $find_user->api_token]],200);
             }
         }
-        return response(new ErrorsResource(['code' => 401, 'message' => 'Authentication failed']), 401);
+        return response(['data' => ['code' => 401, 'message' => 'Authentication failed']], 401);
     }
 
     public function logout(Request $request)
@@ -62,13 +61,11 @@ class UserController extends Controller
         $user->api_token = null;
         $user->save();
 
-        return response(new LogoutResource($request), 200);
+        return response(['data' => ['message' => 'logout']], 200);
     }
 
     public function showUsers()
     {
-        $users['data'] = User::select('id', 'name', 'login')->get();
-
-        return response($users, 200);
+        return (ShowUsersResource::collection(User::all()))->response()->setStatusCode(200);
     }
 }

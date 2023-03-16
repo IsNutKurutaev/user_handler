@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
-class Register extends ApiValidation
+use App\Models\User;
+use Illuminate\Validation\Rule;
+
+class RegisterRequest extends ApiValidationRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +26,7 @@ class Register extends ApiValidation
     {
         return [
             'name' => ['required'],
-            'login' => ['required', 'unique:users,login'],
+            'login' => ['required', Rule::unique(User::class, 'login')],
             'password' => ['required']
         ];
     }
