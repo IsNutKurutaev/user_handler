@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShiftsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserOnShiftController;
@@ -23,11 +24,15 @@ Route::middleware('scope.token')->group(function ()
 {
     Route::get('logout', [UserController::class, 'logout']);
 
-    Route::middleware('admin.scope')->group(function () {
+    Route::middleware('role.scope:Администратор')->group(function () {
         Route::get('user', [UserController::class, 'showUsers']);
         Route::post('work-shift', [ShiftsController::class, 'createShift']);
         Route::get('work-shift/{id}/open', [ShiftsController::class, 'shiftOpen']);
         Route::get('work-shift/{id}/close', [ShiftsController::class, 'shiftClose']);
         Route::post('work-shift/{id}/user', [UserOnShiftController::class, 'addUserOnShift']);
+        Route::get('work-shift/{id}/order', [OrderController::class, 'showOrder']);
+    });
+    Route::middleware('role.cope:Официант')->group(function () {
+        Route::post('order', );
     });
 });

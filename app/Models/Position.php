@@ -6,22 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Shifts extends Model
+class Position extends Model
 {
     use HasFactory;
-
-    protected $fillable = [ 'start', 'end', 'active' ];
 
     protected $guarded = [ 'id' ];
 
     protected $hidden = [ 'created_at', 'updated_at' ];
 
-    protected $table = 'shifts';
+    protected $fillable = [ 'count', 'position', 'price' ];
 
-    public function workerOnShift(): HasMany
-    {
-        return $this->hasMany(WorkerOnShift::class);
-    }
+    protected $table = 'position';
+
     public function order(): HasMany
     {
         return $this->hasMany(Order::class);

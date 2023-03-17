@@ -29,6 +29,11 @@ class User extends Model
         return $this->hasMany(WorkerOnShift::class);
     }
 
+    public function order(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(UsersGroup::class);
