@@ -38,9 +38,4 @@ class User extends Model
     {
         return $this->belongsTo(UsersGroup::class);
     }
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(UsersStatus::class);
-    }
 }

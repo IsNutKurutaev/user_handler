@@ -25,7 +25,6 @@ return new class extends Migration
 
             $table->foreign('shift_workers')->references('id')->on('users');
             $table->foreign('shift_id')->references('id')->on('shifts');
-            $table->foreign('position_id')->references('id')->on('position');
         });
     }
 

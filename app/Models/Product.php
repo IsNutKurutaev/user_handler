@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class UsersStatus extends Model
+class Product extends Model
 {
     use HasFactory;
-
-    protected $fillable = [ 'name' ];
 
     protected $guarded = [ 'id' ];
 
     protected $hidden = [ 'created_at', 'updated_at' ];
 
-    protected $table = 'users_status';
+    protected $fillable = [ 'count', 'position', 'price' ];
 
-    public function users(): HasMany
+    protected $table = 'products';
+
+    public function product_order(): HasMany
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(ProductOrder::class);
     }
 }

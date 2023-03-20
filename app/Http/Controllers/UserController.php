@@ -36,7 +36,7 @@ class UserController extends Controller
             'password' => Hash::make($request['password']),
             'api_token' => Str::random(100),
             'group_id' => $request['role_id'],
-            'status_id' => $request['status_id'] ?? 1,
+            'status' => $request['status'] ?? 'working',
         ]);
 
         return (new RegistrationResource($user))->response()->setStatusCode(201);

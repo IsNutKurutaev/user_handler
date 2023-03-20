@@ -24,7 +24,7 @@ Route::middleware('scope.token')->group(function ()
 {
     Route::get('logout', [UserController::class, 'logout']);
 
-    Route::middleware('role.scope:Администратор')->group(function () {
+    Route::middleware('role.scope:admin')->group(function () {
         Route::get('user', [UserController::class, 'showUsers']);
         Route::post('work-shift', [ShiftsController::class, 'createShift']);
         Route::get('work-shift/{id}/open', [ShiftsController::class, 'shiftOpen']);
@@ -32,7 +32,7 @@ Route::middleware('scope.token')->group(function ()
         Route::post('work-shift/{id}/user', [UserOnShiftController::class, 'addUserOnShift']);
         Route::get('work-shift/{id}/order', [OrderController::class, 'showOrder']);
     });
-    Route::middleware('role.cope:Официант')->group(function () {
+    Route::middleware('role.cope:waiter')->group(function () {
         Route::post('order', );
     });
 });
