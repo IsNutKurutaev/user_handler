@@ -20,11 +20,12 @@ return new class extends Migration
             $table->dateTime('create_at')->default(now())->nullable();
             $table->string('status');
             $table->unsignedBigInteger('shift_id');
-            $table->unsignedBigInteger('position_id')->nullable();
+            $table->unsignedBigInteger('table_id')->nullable();
             $table->timestamps();
 
             $table->foreign('shift_workers')->references('id')->on('users');
             $table->foreign('shift_id')->references('id')->on('shifts');
+            $table->foreign('table_id')->references('id')->on('tables');
         });
     }
 
