@@ -18,7 +18,7 @@ class Product extends Model
 
     protected $table = 'products';
 
-    public function product_order(): HasMany
+    public function productOrder(): HasMany
     {
         return $this->hasMany(ProductOrder::class);
     }

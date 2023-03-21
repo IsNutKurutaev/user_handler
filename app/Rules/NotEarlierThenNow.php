@@ -2,15 +2,29 @@
 
 namespace App\Rules;
 
-use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Rule;
 
-class NotEarlierThenNow implements ValidationRule
+class NotEarlierThenNow implements Rule
 {
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function passes($attribute, $value)
     {
-        if ($value < now()) {
-            $fail('The attribute earlier then now');
-        }
+        return $value > now();
+    }
+
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return 'The attribute earlier then now';
     }
 }

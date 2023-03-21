@@ -13,9 +13,9 @@ class Order extends Model
 
     protected $guarded = [ 'id' ];
 
-    protected $hidden = [ 'created_at', 'updated_at' ];
+    protected $hidden = [ 'created_at', 'updated_at',];
 
-    protected $fillable = [ 'table', 'shift_worker', 'create_at', 'status' ];
+    protected $fillable = [ 'table', 'shift_worker', 'create_at', 'status', 'table_id', ];
 
     protected $table = 'orders';
 
@@ -24,14 +24,14 @@ class Order extends Model
         return $this->belongsTo(Product::class);
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'shift_workers');
+    }
+
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shifts::class);
-    }
-
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
     }
 
     public function table(): BelongsTo
@@ -39,7 +39,7 @@ class Order extends Model
         return $this->belongsTo(Table::class);
     }
 
-    public function product_order(): HasMany
+    public function productOrder(): HasMany
     {
         return $this->hasMany(ProductOrder::class);
     }

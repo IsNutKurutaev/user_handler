@@ -30,7 +30,7 @@ Route::middleware('scope.token')->group(function ()
         Route::get('work-shift/{id}/open', [ShiftsController::class, 'shiftOpen']);
         Route::get('work-shift/{id}/close', [ShiftsController::class, 'shiftClose']);
         Route::post('work-shift/{id}/user', [UserOnShiftController::class, 'addUserOnShift']);
-        Route::get('work-shift/{id}/order', [OrderController::class, 'showOrder']);
+        Route::get('work-shift/{id}/order', [ShiftsController::class, 'showOrderOnShift']);
     });
     Route::middleware('role.cope:waiter')->group(function () {
         Route::post('order', );

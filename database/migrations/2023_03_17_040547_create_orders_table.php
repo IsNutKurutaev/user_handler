@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('table');
+            $table->unsignedBigInteger('table_id')->nullable();
             $table->unsignedBigInteger('shift_workers');
             $table->dateTime('create_at')->default(now())->nullable();
             $table->string('status');
             $table->unsignedBigInteger('shift_id');
-            $table->unsignedBigInteger('table_id')->nullable();
+            $table->unsignedInteger('person_tally')->nullable();
             $table->timestamps();
 
             $table->foreign('shift_workers')->references('id')->on('users');

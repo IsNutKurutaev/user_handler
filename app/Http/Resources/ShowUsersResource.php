@@ -18,7 +18,7 @@ class ShowUsersResource extends JsonResource
                 'id' => $this->id,
                 'name' => $this->name,
                 'login' => $this->login,
-                'status' => $this->status->name,
+                'status' => $this->status,
                 'group' => $this->group->name
             ];
         }

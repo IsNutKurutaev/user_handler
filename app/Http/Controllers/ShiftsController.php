@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ShiftRequest;
+use App\Http\Resources\ShowOrderOnShiftResource;
+use App\Models\Order;
 use App\Models\Shifts;
 use Illuminate\Http\Request;
 
@@ -37,5 +39,11 @@ class ShiftsController extends Controller
 
         $current_shift->update(['active' => false]);
         return response(['data' => ['id' => $current_shift->id, 'start' => $current_shift->start, 'end' => $current_shift->end, 'active' => $current_shift->active]],200);
+    }
+    public function  showOrderOnShift(Request $request)
+    {
+        $shift = Shifts::find($request->id);
+
+        return ShowOrderOnShiftResource::collection($shift->get())->response()->setStatusCode(200);
     }
 }

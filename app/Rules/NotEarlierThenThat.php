@@ -3,19 +3,33 @@
 namespace App\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Rule;
 
-class NotEarlierThenThat implements ValidationRule
+class NotEarlierThenThat implements Rule
 {
-    public function __construct($params)
+    public function __construct($param)
     {
-        $this->params = $params;
+        $this->param = $param;
+    }
+    /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function passes($attribute, $value)
+    {
+        return $value > $this->param;
     }
 
-    public function validate(string $attribute, mixed $value, Closure $fail): void
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
     {
-        if ($value < $this->params) {
-            $fail('The attribute earlier then start');
-        }
+        return 'The attribute earlier then start';
     }
 }
