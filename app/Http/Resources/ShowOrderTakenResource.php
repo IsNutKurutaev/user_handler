@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderWrapperResource extends JsonResource
+class ShowOrderTakenResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,18 +14,13 @@ class OrderWrapperResource extends JsonResource
      */
     public function toArray($request)
     {
-        $amount_for_order = 0;
-        foreach ($this->productOrder as $i) {
-            $amount_for_order += $i->product->price;
-        }
-
         return [
             'id' => $this->id,
             'table' => $this->table->name,
-            'shift_worker' => $this->user->name,
+            'shift_workers' => $this->user->name,
             'create_at' => $this->create_at,
             'status' => $this->status,
-            'price' => $amount_for_order,
+            'price' => 0,
         ];
     }
 }

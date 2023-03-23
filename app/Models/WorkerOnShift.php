@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * @method static firstWhere(string $string, int $int)
+ */
 class WorkerOnShift extends Model
 {
     use HasFactory;

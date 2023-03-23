@@ -19,10 +19,10 @@ class Order extends Model
 
     protected $table = 'orders';
 
-    public function product(): BelongsTo
-    {
-        return $this->belongsTo(Product::class);
-    }
+//    public function product(): BelongsTo
+//    {
+//        return $this->belongsTo(Product::class);
+//    }
 
     public function user(): BelongsTo
     {

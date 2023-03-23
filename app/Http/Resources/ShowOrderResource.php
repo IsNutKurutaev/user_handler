@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderWrapperResource extends JsonResource
+class ShowOrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class OrderWrapperResource extends JsonResource
     public function toArray($request)
     {
         $amount_for_order = 0;
-        foreach ($this->productOrder as $i) {
-            $amount_for_order += $i->product->price;
+        foreach ($this->productOrder as $item) {
+            $amount_for_order += $item->product->price;
         }
 
         return [
@@ -25,7 +25,8 @@ class OrderWrapperResource extends JsonResource
             'shift_worker' => $this->user->name,
             'create_at' => $this->create_at,
             'status' => $this->status,
-            'price' => $amount_for_order,
+            'positions' => PositionsOrderWrapper::collection($this->productOrder),
+            'price_all' => $amount_for_order,
         ];
     }
 }

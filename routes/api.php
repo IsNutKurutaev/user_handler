@@ -4,7 +4,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShiftsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserOnShiftController;
-use Illuminate\Http\Request;
+use App\Http\Middleware\IsUserOnShift;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [UserController::class, 'login']);
 Route::post('user', [UserController::class, 'userRegistration']);
 
+
 Route::middleware('scope.token')->group(function ()
 {
     Route::get('logout', [UserController::class, 'logout']);
@@ -32,7 +33,16 @@ Route::middleware('scope.token')->group(function ()
         Route::post('work-shift/{id}/user', [UserOnShiftController::class, 'addUserOnShift']);
         Route::get('work-shift/{id}/order', [ShiftsController::class, 'showOrderOnShift']);
     });
-    Route::middleware('role.cope:waiter')->group(function () {
-        Route::post('order', );
+
+    Route::middleware('role.scope:cook')->group(function () {
+        Route::get('order/taken', [OrderController::class, 'showOrderTaken']);
     });
+
+    Route::middleware('role.scope:waiter')->group(function () {
+        Route::post('order', [OrderController::class, 'createOrder']);
+        Route::get('order/{id}', [OrderController::class, 'showOrder']);
+        Route::get('work-tort/{id}/order', [OrderController::class, 'showOrderOnShift']);
+    });
+
+    Route::patch('order/{id}/change-status', [OrderController::class, 'changeOrderStatus'])->middleware('role.scope:waiter,cook');
 });
