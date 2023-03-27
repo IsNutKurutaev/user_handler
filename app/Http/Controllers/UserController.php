@@ -44,13 +44,14 @@ class UserController extends Controller
 
     public function login(LoginRequest $request)
     {
+        /** @var User $find_user */
         $find_user = User::firstWhere('login', $request->login);
         if(isset($find_user)) {
             if(Hash::check($request->password, $find_user->password))
             {
                 $find_user->api_token = Str::random(100);
                 $find_user->save();
-                return response(['data' => ['user_token' => $find_user->api_token]],200);
+                return response(['data' => ['user_token' => $find_user->createToken('login')->plainTextToken]],200);
             }
         }
         return response(['data' => ['code' => 401, 'message' => 'Authentication failed']], 401);

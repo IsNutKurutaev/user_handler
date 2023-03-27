@@ -10,8 +10,9 @@ use App\Http\Resources\ShowOrderTakenResource;
 use App\Models\Order;
 use App\Models\Shifts;
 use App\Models\User;
-use App\Models\WorkerOnShift;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class OrderController extends Controller
@@ -20,20 +21,18 @@ class OrderController extends Controller
     {
         $shift = Shifts::find($request['work_shift_id']);
 
-        if (! $shift?->active) {
+        if (!$shift?->active) {
             return response(['error' => ['code' => 403, 'message' => 'Forbidden. The shift must be active!']], 403);
         }
 
-        $user = User::firstWhere('api_token', $request->bearerToken());
-
-        $is_worker_on_shift = WorkerOnShift::query()->where('user_id', $user->id)->where('shift_id', $shift?->id)->first();
+        $is_worker_on_shift = $shift->users->pluck('id')->contains(Auth::user()->id);
 
         if ($is_worker_on_shift) {
-            $worker_on_shift = Order::forceCreate([
-                'shift_workers' => User::firstWhere('api_token', $request->bearerToken())->id,
+            $worker_on_shift = Order::create([
+                'shift_workers' => Auth::user()->id,
                 'create_at' => now(),
-                'status' => 'Принят',
-                'shift_id' => Shifts::firstWhere('active', 1)->id,
+                'status' => Order::ACCEPTED,
+                'shift_id' => $shift->id,
                 'person_tally' => $request['count'],
                 'table_id' => $request['table_id'],
             ]);
@@ -78,29 +77,23 @@ class OrderController extends Controller
         return response(['error' => ['code' => 403, 'message' => 'Forbidden. You did not accept this order!']], 403);
     }
 
-    public function changeOrderStatus(ChangeOrderStatusRequest $request)
+    public function changeOrderStatus(Order $order, ChangeOrderStatusRequest $request)
     {
+        /** @var User $user */
+        $user = Auth::user();
 
-        $user = User::firstWhere('api_token', $request->bearerToken());
+        Gate::authorize('shift-active', $order);
 
-        $order = Order::find($request->id);
+        if ($user->group->slug === User::WAITER) {
+            Gate::authorize('waiter-order-owner', $order);
 
-        if ( ! $order->shift->active) {
-            return response(['error' => ['code' => 403, 'message' => 'You cannot change the order status of a closed shift!']], 403);
-        }
-
-        if ($user->group->slug === 'waiter') {
-            if ($order->user->id !== $user->id) {
-                return response(['error' => ['code' => 403, 'message' => 'Forbidden! You did not accept this order!']], 403);
-            }
-
-            if ( ! (($order->status === 'Принят' && $request->status === 'Отменен') || ($order->status === 'Готов' && $request->status === 'Оплачен')) ) {
+            if (!Gate::check('waiter-can-change-status', [$order, $request])) {
                 return response(['error' => ['code' => 403, 'message' => 'Forbidden! Can`t change existing order status']], 403);
             }
         }
 
-        if ($user->group->slug === 'cook') {
-            if ( ! (($order->status === 'Принят' && $request->status === 'Готовится') || ($order->status === 'Готовится' && $request->status === 'Готов')) ) {
+        if ($user->group->slug === User::COOK) {
+            if (!Gate::check('cook-can-change-status', [$order, $request])) {
                 return response(['error' => ['code' => 403, 'message' => 'Forbidden! Can`t change existing order status']], 403);
             }
         }
@@ -112,7 +105,7 @@ class OrderController extends Controller
 
     public function showOrderTaken()
     {
-        $order = Order::query()->where('status', 'Принят')->orWhere('status', 'Готовится')->get();
+        $order = Order::query()->where('status', Order::ACCEPTED)->orWhere('status', Order::PREPARING)->get();
 
         return ShowOrderTakenResource::collection($order)->response()->setStatusCode(200);
     }

@@ -21,7 +21,7 @@ Route::post('login', [UserController::class, 'login']);
 Route::post('user', [UserController::class, 'userRegistration']);
 
 
-Route::middleware('scope.token')->group(function ()
+Route::middleware('auth:sanctum')->group(function ()
 {
     Route::get('logout', [UserController::class, 'logout']);
 
@@ -30,7 +30,7 @@ Route::middleware('scope.token')->group(function ()
         Route::post('work-shift', [ShiftsController::class, 'createShift']);
         Route::get('work-shift/{id}/open', [ShiftsController::class, 'shiftOpen']);
         Route::get('work-shift/{id}/close', [ShiftsController::class, 'shiftClose']);
-        Route::post('work-shift/{id}/user', [UserOnShiftController::class, 'addUserOnShift']);
+        Route::post('work-shift/{shift}/user', [UserOnShiftController::class, 'addUserOnShift']);
         Route::get('work-shift/{id}/order', [ShiftsController::class, 'showOrderOnShift']);
     });
 
@@ -44,5 +44,5 @@ Route::middleware('scope.token')->group(function ()
         Route::get('work-tort/{id}/order', [OrderController::class, 'showOrderOnShift']);
     });
 
-    Route::patch('order/{id}/change-status', [OrderController::class, 'changeOrderStatus'])->middleware('role.scope:waiter,cook');
+    Route::patch('order/{order}/change-status', [OrderController::class, 'changeOrderStatus'])->middleware('role.scope:waiter,cook');
 });

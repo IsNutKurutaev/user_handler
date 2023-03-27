@@ -6,12 +6,14 @@ use App\Models\User;
 use App\Models\UsersGroup;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HasUserRole
 {
     public function handle(Request $request, Closure $next, string $role, string $second_role = null)
     {
-        $user = User::query()->where('api_token', $request->bearerToken())->first();
+        /** @var User $user */
+        $user = Auth::user();
 
         if ($user->group->slug === $role) {
             return $next($request);

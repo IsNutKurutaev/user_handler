@@ -11,11 +11,19 @@ class Order extends Model
 {
     use HasFactory;
 
+    public const ACCEPTED = 'Принят';
+
+    public const DECLINED = 'Отменен';
+
+    public const PREPARING = 'Готовится';
+
+    public const READY = 'Готов';
+
+    public const PAID = 'Оплачен';
+
     protected $guarded = [ 'id' ];
 
     protected $hidden = [ 'created_at', 'updated_at',];
-
-    protected $fillable = [ 'table', 'shift_worker', 'create_at', 'status', 'table_id', ];
 
     protected $table = 'orders';
 
