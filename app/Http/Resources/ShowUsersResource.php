@@ -12,7 +12,7 @@ class ShowUsersResource extends JsonResource
      * @return array
      */
 
-        public function  toArray($request)
+        public function toArray($request)
         {
             return [
                 'id' => $this->id,

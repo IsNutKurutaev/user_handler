@@ -20,7 +20,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [UserController::class, 'login']);
 Route::post('user', [UserController::class, 'userRegistration']);
 
-
 Route::middleware('auth:sanctum')->group(function ()
 {
     Route::get('logout', [UserController::class, 'logout']);
