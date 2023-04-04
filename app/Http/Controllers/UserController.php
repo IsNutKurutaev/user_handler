@@ -14,6 +14,7 @@ use App\Http\Resources\RegistrationResource;
 use App\Http\Resources\ShowUsersResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -54,14 +55,12 @@ class UserController extends Controller
                 return response(['data' => ['user_token' => $find_user->createToken('login')->plainTextToken]],200);
             }
         }
-        return response(['data' => ['code' => 401, 'message' => 'Authentication failed']], 401);
+        return response(['error' => ['code' => 401, 'message' => 'Authentication failed']], 401);
     }
 
     public function logout(Request $request)
     {
-        $user = User::firstWhere('api_token', $request->bearerToken());
-        $user->api_token = null;
-        $user->save();
+        $delete = DB::table('personal_access_tokens')->where('token', '=', $request->bearerToken());
 
         return response(['data' => ['message' => 'logout']], 200);
     }

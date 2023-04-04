@@ -20,6 +20,6 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 
-Header Set Access-Control-Allow-Origin '*' 
+Header Set Access-Control-Allow-Origin '*'
 Header Set Access-Control-Allow-Methods 'GET, PUT, POST, DELETE'
-Header Set Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept'
+Header Set Access-Control-Allow-Headers 'Origin, X-Requested-With, Content-Type, Accept, Authorization'
